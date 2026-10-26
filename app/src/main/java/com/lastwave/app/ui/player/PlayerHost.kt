@@ -6502,10 +6502,10 @@ internal fun formatTime(ms: Long): String {
 internal fun PlayableTrack.isImportedLocalFile(): Boolean =
     com.lastwave.app.data.generate.LocalAudioFormats.importedPathOrNull(playbackUrl) != null
 
-
-private fun Modifier.tvYellowFocus(shape: androidx.compose.ui.graphics.Shape): Modifier = androidx.compose.ui.composed {
+@androidx.compose.runtime.Composable
+private fun Modifier.tvYellowFocus(shape: androidx.compose.ui.graphics.Shape): Modifier {
     var focused by androidx.compose.runtime.remember { androidx.compose.runtime.mutableStateOf(false) }
-    this
+    return this
         .onFocusChanged { focused = it.isFocused }
         .focusable()
         .then(if (focused) Modifier.border(4.dp, androidx.compose.ui.graphics.Color(0xFFFFEB3B), shape) else Modifier)
