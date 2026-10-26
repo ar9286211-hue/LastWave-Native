@@ -2,6 +2,8 @@
 
 package com.lastwave.app.ui.player
 
+import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.combinedClickable
@@ -4296,7 +4298,8 @@ private fun MainControls(state: MusicPlayerState, player: MusicPlayer, isTranslu
             shadowElevation = 0.dp,
             modifier = Modifier
                 .size(sideSize)
-                .graphicsLayer {
+                .tvYellowFocus(CircleShape)
+.graphicsLayer {
                     scaleX = prevScale
                     scaleY = prevScale
                 },
@@ -4333,7 +4336,7 @@ private fun MainControls(state: MusicPlayerState, player: MusicPlayer, isTranslu
             modifier = Modifier
                 .width(pillWidth)
                 .height(if (isTranslucent) 56.dp else 60.dp)
-                .graphicsLayer {
+                .tvYellowFocus(pillShape).graphicsLayer {
                     scaleX = playScale
                     scaleY = playScale
                 },
@@ -4372,7 +4375,8 @@ private fun MainControls(state: MusicPlayerState, player: MusicPlayer, isTranslu
             shadowElevation = 0.dp,
             modifier = Modifier
                 .size(sideSize)
-                .graphicsLayer {
+                .tvYellowFocus(CircleShape)
+.graphicsLayer {
                     scaleX = nextScale
                     scaleY = nextScale
                 },
@@ -6497,3 +6501,12 @@ internal fun formatTime(ms: Long): String {
 /** True for files copied by the Local songs importer (app-private storage). */
 internal fun PlayableTrack.isImportedLocalFile(): Boolean =
     com.lastwave.app.data.generate.LocalAudioFormats.importedPathOrNull(playbackUrl) != null
+
+
+private fun Modifier.tvYellowFocus(shape: androidx.compose.ui.graphics.Shape): Modifier = androidx.compose.ui.composed {
+    var focused by androidx.compose.runtime.remember { androidx.compose.runtime.mutableStateOf(false) }
+    this
+        .onFocusChanged { focused = it.isFocused }
+        .focusable()
+        .then(if (focused) Modifier.border(4.dp, androidx.compose.ui.graphics.Color(0xFFFFEB3B), shape) else Modifier)
+}
